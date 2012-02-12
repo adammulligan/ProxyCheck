@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ProxyCheck</title>
+    <script>
+      chrome.webRequest.onBeforeRequest.addListener(
+        function(info) {
+          console.log("URL intercepted: " + info.url);
+          return {};
+        },
+        // filters
+        {
+          urls: [
+          "<all_urls>"
+          ]
+        },
+        // extraInfoSpec
+        ["blocking"]);
+    </script>
+  </head>
+  <body>
+
+  </body>
+</html>

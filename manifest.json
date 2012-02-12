@@ -6,5 +6,11 @@
     "default_icon": "icon.png",
     "popup": "popup.html"
   },
-  "permissions": []
+  "background_page": "background.html",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "webNavigation",
+    "<all_urls>"
+  ]
 }
