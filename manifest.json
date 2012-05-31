@@ -1,6 +1,6 @@
 {
   "name": "ProxyCheck",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Provides an easy, instantly accessible method of determining if you are behind a proxy.",
   "homepage_url": "http://cyanoryx.com",
   "icons": {
