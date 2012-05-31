@@ -2,19 +2,20 @@
 <html>
   <head>
     <title>ProxyCheck</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
       $(document).ready(function() {
         $.get('http://jsonip.com',function(data) {
           $('#address').text(data.ip);
 
           var val = (localStorage.proxy_ips.indexOf(data.ip)!=-1) ? "on" : "off";
-          $('#thumbs_image').attr("src","thumbs_"+val+".png").attr("alt","Proxy is "+val+"!");
-          chrome.browserAction.setIcon({path: "icon_"+val+".png"})
+          $('#thumbs_image').attr("src","assets/thumbs_"+val+".png").attr("alt","Proxy is "+val+"!");
+          chrome.browserAction.setIcon({path: "assets/icon_"+val+".png"});
         });
 
-        $('#running').click(function(){
-          localStorage.show_alerts=false;
+        $('#running').prop('checked', localStorage.show_alerts === 'true');
+        $('#running').change(function(){
+          localStorage.show_alerts=$('#running').is(':checked');
         });
       });
     </script>
@@ -38,10 +39,10 @@
     <div style="margin:0 auto;">
       <div style="float:left;width:80%;">
         Your IP is:<br />
-        <span id="address"><img src="loading.gif" alt="Loading..."/></span>
+        <span id="address"><img src="assets/loading.gif" alt="Loading..."/></span>
       </div>
       <div style="float:right;width:15%;padding:10px 0 5px 0;">
-        <img src="thumbs_down.png" alt="Ok!" id="thumbs_image" />
+        <img src="assets/thumbs_off.png" alt="Ok!" id="thumbs_image" />
       </div>
       <div id="footer">
         <input type="checkbox" id="running" /><label for="running">Alert me</label> | <a href="options.html">Settings</a>

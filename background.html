@@ -2,11 +2,28 @@
 <html>
   <head>
     <title>ProxyCheck</title>
+    <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script>
+      var whitelist = ["http://jsonip.com/"];
+
       chrome.webRequest.onBeforeRequest.addListener(
         function(info) {
-          console.log("URL intercepted: " + info.url);
-          return {};
+          $.get('http://jsonip.com/',function(data) {
+            window.ip = data.ip;
+          });
+
+          if (localStorage.proxy_ips!=undefined && localStorage.proxy_ips.indexOf(window.ip)!=-1) {
+            chrome.browserAction.setIcon({path: "assets/icon_on.png"});
+          } else {
+            chrome.browserAction.setIcon({path: "assets/icon_off.png"});
+            if (localStorage.show_alerts === 'true') {
+              if (isExtension(info.url) || ($.inArray(info.url,whitelist) == 0)) {
+                return { cancel: false };
+              } else {
+                return { redirectUrl: chrome.extension.getURL('blocked.html') };
+              }
+            }
+          }
         },
         // filters
         {
@@ -16,6 +33,11 @@
         },
         // extraInfoSpec
         ["blocking"]);
+
+        function isExtension(url) {
+          var protocol = url.split("://")[0];
+          return protocol == 'file' || protocol == 'chrome-extension';
+        }
     </script>
   </head>
   <body>
