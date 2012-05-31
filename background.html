@@ -4,11 +4,11 @@
     <title>ProxyCheck</title>
     <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script>
-      var whitelist = ["http://jsonip.com/"];
+      var whitelist = ["https://jsonip.appspot.com/"];
 
       chrome.webRequest.onBeforeRequest.addListener(
         function(info) {
-          $.get('http://jsonip.com/',function(data) {
+          $.get('https://jsonip.appspot.com/',function(data) {
             window.ip = data.ip;
           });
 

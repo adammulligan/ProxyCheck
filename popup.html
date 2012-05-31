@@ -5,7 +5,7 @@
     <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        $.get('http://jsonip.com',function(data) {
+        $.get('https://jsonip.appspot.com',function(data) {
           $('#address').text(data.ip);
 
           var val = (localStorage.proxy_ips.indexOf(data.ip)!=-1) ? "on" : "off";
