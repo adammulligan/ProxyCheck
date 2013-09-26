@@ -1,4 +1,4 @@
-whitelist = ["http://jsonip.com"]
+whitelist = ["http://jsonip.com/"]
 
 isLocalUrl = (url) ->
   protocol = url.split("://")[0]
@@ -6,21 +6,27 @@ isLocalUrl = (url) ->
 
 chrome.webRequest.onBeforeRequest.addListener(
   (info) ->
-    $.get 'http://jsonip.com', (data) =>
-      ip = data.ip
+    $.ajaxSetup(async: false)
 
-      ips = localStorage.getItem('proxy_ips')
+    ip = ""
+    $.get('http://jsonip.com').done(
+      (data) => ip = data.ip
+    )
 
-      if ips? && ips.indexOf(window.ip) != -1
-        chrome.browserAction.setIcon({path: "assets/icon_on.png"})
-      else
-        chrome.browserAction.setIcon({path: "assets/icon_off.png"})
+    ips = localStorage.getItem('proxy_ips')
 
-        if localStorage.getItem('show_alerts') == 'true'
-          if isLocalUrl(info.url) || $.inArray(info.url, whitelist) == 0
-            return { cancel: false }
-          else
-            return { redirectUrl: chrome.extension.getURL('blocked.html') }
+    if ips? && ips.indexOf(ip) != -1
+      return chrome.browserAction.setIcon({path: "assets/icon_on.png"})
+    else
+      chrome.browserAction.setIcon({path: "assets/icon_off.png"})
+
+      urlWhitelisted = isLocalUrl(info.url) || $.inArray(info.url, whitelist) == 0
+      showAlerts = localStorage.getItem('show_alerts') == 'true'
+
+      if !showAlerts || urlWhitelisted
+        return { cancel: false }
+
+    return { redirectUrl: chrome.extension.getURL('blocked.html') }
   ,
   {
     urls: ["<all_urls>"]
